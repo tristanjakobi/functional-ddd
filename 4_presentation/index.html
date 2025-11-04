@@ -1,40 +1,656 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+	<title>Functional DDD</title>
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
+	<link rel="stylesheet" href="dist/reset.css">
+	<link rel="stylesheet" href="dist/reveal.css">
+	<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+	<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	<style>
+		.reveal {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+		}
+		
+		.reveal h1 { 
+			font-size: 1.2em; 
+			font-weight: 600;
+			line-height: 1.2;
+			margin-bottom: 0.5em;
+		}
+		.reveal h2 { 
+			font-size: 1em; 
+			font-weight: 600;
+			line-height: 1.3;
+			margin-bottom: 0.6em;
+		}
+		.reveal h3 { 
+			font-size: 0.85em; 
+			font-weight: 600;
+			line-height: 1.3;
+			margin-bottom: 0.5em;
+		}
+		.reveal h4 { 
+			font-size: 0.75em; 
+			font-weight: 600;
+		}
+		.reveal p, .reveal li { 
+			font-size: 0.65em; 
+			line-height: 1.5;
+			margin-bottom: 0.6em;
+		}
+		.reveal ul, .reveal ol {
+			margin-left: 1.5em;
+		}
+		.reveal li {
+			margin-bottom: 0.4em;
+		}
+		.reveal code { 
+			font-size: 0.6em; 
+			font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+		}
+		.reveal pre { 
+			font-size: 0.55em;
+			line-height: 1.3;
+			margin: 0.8em 0;
+		}
+		.reveal pre code { 
+			font-size: 0.6em;
+			line-height: 1.3;
+			padding: 0.6em;
+		}
+		.reveal blockquote { 
+			font-size: 0.65em; 
+			line-height: 1.5;
+			border-left: 4px solid #fff;
+			padding-left: 1em;
+			margin: 1em 0;
+		}
+		.reveal table {
+			font-size: 0.6em;
+		}
+		.reveal table th {
+			font-weight: 600;
+		}
+		.reveal section {
+			text-align: left;
+		}
+		.reveal .slides section {
+			padding: 1.5em;
+			max-width: 100%;
+			box-sizing: border-box;
+		}
+		.reveal pre {
+			max-width: 100%;
+			overflow-x: auto;
+		}
+		.reveal table {
+			max-width: 100%;
+			display: block;
+			overflow-x: auto;
+		}
+		.reveal img {
+			max-width: 100%;
+			height: auto;
+			border: none;
+			box-shadow: none;
+			display: block;
+			margin: 0 auto;
+		}
+		.reveal img[style*="max-height"] {
+			max-height: 500px;
+		}
+		
+		@media (max-width: 1024px) {
+			.reveal .slides section { padding: 1em; }
+		}
+		
+		@media (max-width: 768px) {
+			.reveal h1 { font-size: 1em; }
+			.reveal h2 { font-size: 0.9em; }
+			.reveal h3 { font-size: 0.8em; }
+			.reveal h4 { font-size: 0.7em; }
+			.reveal p, .reveal li { font-size: 0.7em; }
+			.reveal code { font-size: 0.65em; }
+			.reveal pre { font-size: 0.6em; }
+			.reveal pre code { font-size: 0.65em; }
+			.reveal blockquote { font-size: 0.7em; }
+			.reveal table { font-size: 0.65em; }
+			.reveal .slides section { padding: 0.8em; }
+			.reveal img { 
+				max-height: 300px !important; 
+			}
+			.reveal img[style*="max-height"] {
+				max-height: 300px !important;
+			}
+		}
+		
+		@media (max-width: 480px) {
+			.reveal h1 { font-size: 0.9em; }
+			.reveal h2 { font-size: 0.8em; }
+			.reveal h3 { font-size: 0.75em; }
+			.reveal h4 { font-size: 0.65em; }
+			.reveal p, .reveal li { font-size: 0.65em; }
+			.reveal code { font-size: 0.6em; }
+			.reveal pre { font-size: 0.55em; }
+			.reveal pre code { font-size: 0.6em; }
+			.reveal blockquote { font-size: 0.65em; }
+			.reveal table { font-size: 0.6em; }
+			.reveal .slides section { padding: 0.6em; }
+			.reveal img { 
+				max-height: 250px !important; 
+			}
+			.reveal img[style*="max-height"] {
+				max-height: 250px !important;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="reveal">
+
+		<div class="slides">
+			
+			<!-- Title Slide -->
+			<section>
+				<h1>Functional Domain-Driven Design</h1>
+			</section>
+
+			<!-- Introduction -->
+			<section>
+				<section>
+					<h2>Background</h2>
+					<p>
+						We had a workshop on Domain-Driven Design, where we really mixed concepts from OOP and DDD.
+					</p>
+					<p class="fragment">
+						Since in our project we're thinking about moving towards a more functional architecture, I asked how the modelling process from the workshop would work with that.
+					</p>
+				</section>
+				
+				<section>
+					<h2>Two Claims Were Made</h2>
+					<ol>
+						<li class="fragment">Domain Driven Design is necessarily object oriented</li>
+						<li class="fragment">Other approaches are inherently less efficient to maintain and extend</li>
+					</ol>
+				</section>
+				
+				<section>
+					<h2>Why These Claims?</h2>
+					<p>
+						I think I know where those ideas come from. 
+					</p>
+					<p class="fragment">
+						A lot of early DDD books are very Java/OOP-centric, so that may be why.
+					</p>
+					<p class="fragment">
+						I want to go into these two claims.
+					</p>
+				</section>
+			</section>
+
+			<!-- Claim 1: DDD is inherently object oriented -->
+			<section>
+				<section>
+					<h2>Claim 1: DDD is inherently object oriented</h2>
+					<p>
+						DDD is about modelling business concepts, creating ubiquitous language, defining bounded contexts.
+					</p>
+				</section>
+
+				<section>
+					<h2>Does DDD Work Functionally?</h2>
+					<p>
+						The Domain should be modelled based on a common understanding of Language. 
+					</p>
+					<p class="fragment">
+						Intuitively, you might think that only works using Objects, since that is how we commonly model the World.
+					</p>
+				</section>
+
+				<section>
+					<h2>OOP Example</h2>
+					<pre><code class="hljs typescript" data-trim>
+class Customer {
+  constructor(private readonly id: string, private name: string) {}
+
+  createOrder(items: OrderItem[]): Order {
+    return new Order(this.id, items);
+  }
+}
+
+class Order {
+  constructor(
+    public readonly customerId: string,
+    private items: OrderItem[]
+  ) {}
+}
+					</code></pre>
+					<p>
+						The ubiquitous language "Customer creates Order" maps directly to <code>customer.createOrder()</code>.
+					</p>
+					<p class="fragment">
+						That is consistent with this interpretation of the world.
+					</p>
+				</section>
+
+				<section>
+					<h2>Object Oriented Modelling</h2>
+					<img src="data/modelling_context.png" alt="Object Oriented Modelling" style="max-height: 500px;">
+				</section>
+
+				<section>
+					<h2>But...</h2>
+					<p>
+						We can just as easily model the world as a set of processes of cause and effect (data transformations).
+					</p>
+					<img src="data/compare.png" alt="Compare" style="max-height: 500px;">
+				</section>
+
+				<section>
+					<h2>How Functional DDD Might Look</h2>
+					<p>
+						Let's see how each DDD concept translates to functional programming.
+					</p>
+				</section>
+				
+				<section>
+					<h2>Ubiquitous Language</h2>
+					<p><strong>OOP:</strong> Class names, method names, property names in ubiquitous language</p>
+					<p><strong>FP:</strong> Instead of naming classes, name types and functions</p>
+					<p class="fragment">
+						Instead of <code>Order.approve()</code>, you might have a function 
+						<code>approveOrder : Order -> Order</code>
+					</p>
+				</section>
+
+				<section>
+					<h2>Bounded Contexts</h2>
+					<p><strong>OOP:</strong> Mapped to module, package, namespace containing related classes</p>
+					<p><strong>FP:</strong> Mapped to module, or namespace related to types and functions</p>
+					<p class="fragment">
+						There is no shared mutable state across boundaries, since functional code has explicit dependencies and pure composition.
+					</p>
+				</section>
+
+				<section>
+					<h2>Domain Model</h2>
+					<p><strong>OOP:</strong> hierarchies where behavior and state is coupled</p>
+					<p><strong>FP:</strong> a set of pure types and functions that model the real world</p>
+				</section>
+
+				<section>
+					<h2>Entities</h2>
+					<p><strong>OOP:</strong> Objects with identity and mutable state</p>
+					<p><strong>FP:</strong> Immutable data structures that contain their identity and any state at a point in time</p>
+				</section>
+
+				<section>
+					<h2>Value Objects</h2>
+					<p><strong>OOP:</strong> Often small, immutable classes with value equality</p>
+					<p><strong>FP:</strong> Simple types, equality is derived automatically. One step further is pattern matching in functional languages (like elixir)</p>
+				</section>
+
+				<section>
+					<h2>Repositories</h2>
+					<p><strong>OOP:</strong> Classes that hide persistence mechanics behind OOP interfaces</p>
+					<p><strong>FP:</strong> Functions that represent persistence behavior that can be injected as dependencies</p>
+				</section>
+
+				<section>
+					<h2>Aggregates</h2>
+					<p><strong>OOP:</strong> Objects that encapsulate entities to enforce correct mutation</p>
+					<p><strong>FP:</strong> Aggregates are functions that take current state + command → new state (+ events). That's all that's needed to enforce invariants, since there's no mutation</p>
+				</section>
+
+				<section>
+					<h2>Domain Services</h2>
+					<p><strong>OOP:</strong> Classes encapsulating domain logic that doesn't belong to a single entity</p>
+					<p><strong>FP:</strong> Pure functions grouped in a module. If side effects are needed, they're made explicit by returning them as data (e.g., commands or events)</p>
+				</section>
+
+				<section>
+					<h2>Domain Events</h2>
+					<p><strong>OOP:</strong> Events raised by entities or aggregates that something meaningful happened</p>
+					<p><strong>FP:</strong> Immutable Data Records</p>
+				</section>
+				
+				<section>
+					<h2>Claim 1: Summary</h2>
+					<p>
+						DDD concepts translate naturally to functional programming:
+					</p>
+					<ul>
+						<li class="fragment">Types and functions express ubiquitous language</li>
+						<li class="fragment">Modules define bounded contexts</li>
+						<li class="fragment">Pure functions model domain behavior</li>
+						<li class="fragment">Immutable data structures represent entities</li>
+					</ul>
+					<p class="fragment">
+						DDD is not inherently object-oriented.
+					</p>
+				</section>
+			</section>
+
+			<!-- Claim 2: Functional Programming is inherently more complex -->
+			<section>
+				<section>
+					<h2>Claim 2: Functional Programming is inherently more complex</h2>
+					<p>
+						The claim was, functional programming falls into the category transaction script, 
+						and therefore, it is harder to maintain.
+					</p>
+				</section>
+
+				<section>
+					<h2>What is Transaction Script vs Domain Model?</h2>
+					<p>
+						I had to first look into transaction scripts to understand what they are.
+					</p>
+					<img src="data/graph.jpg" alt="Martin Fowler's domain logic patterns" style="max-height: 500px;">
+				</section>
+
+				<section>
+					<h2>Transaction Script</h2>
+					<blockquote>
+						Transaction Script is a pattern where you organize business logic as a series of procedures, 
+						with each procedure handling a single request/transaction from the presentation layer.
+					</blockquote>
+				</section>
+
+				<section>
+					<h2>Example of transaction script</h2>
+					<pre><code class="hljs typescript" data-trim>
+class OrderService {
+  async placeOrder(userId: string, items: CartItem[]) {
+    if (!items.length) throw new Error("Cart is empty");
+    
+    // All logic in one place
+    let total = 0;
+    for (const item of items) {
+      total += item.price * item.quantity;
+    }
+    
+    await db.createOrder(userId, total);
+  }
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Example of domain model</h2>
+					<pre><code class="hljs typescript" data-trim>
+class Order {
+  private items: OrderItem[];
+  private status: OrderStatus;
+  
+  calculateTotal(): Money {
+    return this.items.reduce(
+      (sum, item) => sum.add(item.subtotal()),
+      Money.zero()
+    );
+  }
+  
+  cancel(): void {
+    if (!this.status.canTransitionTo(OrderStatus.Cancelled)) {
+      throw new Error("Cannot cancel order in current state");
+    }
+    this.status = OrderStatus.Cancelled;
+  }
+}
+
+// Service is thin orchestration
+class OrderService {
+  async placeOrder(userId: string, items: CartItem[]): Promise<string> {
+    const order = new Order(items); // Domain logic in object
+    return await this.orderRepo.save(order);
+  }
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Differences</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Aspect</th>
+								<th>Transaction Script</th>
+								<th>Domain Model</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><strong>Logic location</strong></td>
+								<td>In service procedures</td>
+								<td>In domain objects</td>
+							</tr>
+							<tr>
+								<td><strong>Reusability</strong></td>
+								<td>Copy-paste between procedures</td>
+								<td>Shared methods on objects</td>
+							</tr>
+							<tr>
+								<td><strong>Complexity</strong></td>
+								<td>Linear growth</td>
+								<td>Scales better</td>
+							</tr>
+							<tr>
+								<td><strong>Encapsulation</strong></td>
+								<td>Exposed data</td>
+								<td>Protected invariants</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section>
+					<h2>I Agree</h2>
+					<p>
+						Domain model is probably easier to maintain. And transaction script is probably 
+						what most of our application is doing.
+					</p>
+					<p class="fragment">
+						It's easy to see why you would think functional programming can only be transaction script.
+					</p>
+				</section>
+
+				<section>
+					<h2>Why the confusion</h2>
+					<p>
+						If you are used to thinking in classes, not having a class to you feels like there is no model. 
+						In functional programming, the domain model emerges from the shape of the data, 
+						the collection of functions that define how that data is transformed and by module boundaries.
+					</p>
+				</section>
+
+				<section>
+					<h2>OOP vs FP</h2>
+					<div style="display: flex; gap: 2rem;">
+						<div style="flex: 1;">
+							<h3>OOP</h3>
+							<pre><code class="hljs typescript" data-trim>
+class Order {
+  private items: OrderItem[];
+  
+  calculateTotal(): Money { /* logic */ }
+  cancel(): void { /* logic */ }
+}
+							</code></pre>
+						</div>
+						<div style="flex: 1;">
+							<h3>FP</h3>
+							<pre><code class="hljs typescript" data-trim>
+type Order = { items: OrderItem[] };
+
+const calculateTotal = (order: Order): Money => /* logic */;
+const cancel = (order: Order): Result<Order, Error> => /* logic */;
+							</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>What Really Are The Differences?</h2>
+					<p>
+						And would those differences result in different complexities?
+					</p>
+				</section>
+				
+				<section>
+					<h2>Encapsulation</h2>
+					<p><strong>OOP:</strong> Data is encapsulated within the object.</p>
+					<p><strong>FP:</strong> Data is not encapsulated within objects, but you still control how the domain is interacted with by creating a module interface and choosing what is exported vs. private.</p>
+				</section>
+
+				<section>
+					<h2>Encapsulation - Seeming OOP Advantage</h2>
+					<p>
+						As a developer, it appears harder to create side effects 
+						when data is encapsulated. The interface may be easier to visualize.
+					</p>
+				</section>
+				
+				<section>
+					<h2>Encapsulation - Reality</h2>
+					<p>
+						You have to define the same interface in both paradigms. 
+					</p>
+					<p class="fragment">
+						Actually, in FP, data is treated as immutable within functions, so you have fewer possible side effects.
+					</p>
+				</section>
+
+				<section>
+					<h2>Structuring the Project</h2>
+					<p><strong>OOP:</strong> To find data and logic, you look in the class.</p>
+					<p><strong>FP DDD:</strong> To find data and logic, you look in the module. Everything is in one namespace.</p>
+				</section>
+
+				<section>
+					<h2>Understanding State Changes</h2>
+					<p><strong>OOP:</strong> Aggregates must track how mutations can happen through carefully controlled methods.</p>
+					<p><strong>FP:</strong> Everything is immutable. The old state still exists. State changes are explicit through function composition, making the evolution of state easier to trace.</p>
+					<p class="fragment">
+						You can still have those same 'control' methods.
+					</p>
+				</section>
+
+				<section>
+					<h2>Example: Domain Model Done Functionally</h2>
+					<p>
+						An implementation of the earlier example of domain model code, done functionally:
+					</p>
+				</section>
+				
+				<section>
+					<h2>Functional Domain Model</h2>
+					<pre><code class="hljs typescript" data-trim>
+type Order = {
+  readonly items: readonly OrderItem[];
+  readonly status: OrderStatus;
+};
+
+type OrderStatus = 
+  | { type: 'Pending' }
+  | { type: 'Cancelled', reason: string };
+
+// Domain logic as functions operating on immutable data
+const calculateTotal = (order: Order): Money =>
+  order.items.reduce(
+    (sum, item) => addMoney(sum, subtotal(item)),
+    zeroMoney()
+  );
+
+const cancel = (reason: string) => (order: Order): Result<Order, Error> => {
+  if (order.status.type !== 'Pending') {
+    return Err(new Error('Cannot cancel non-pending order'));
+  }
+  return Ok({
+    ...order,
+    status: { type: 'Cancelled', reason }
+  });
+};
+
+// Application service remains thin
+const placeOrder = async (
+  userId: UserId,
+  items: readonly CartItem[]
+): Promise<OrderId> => {
+  const order = createOrder(items); // Domain function
+  return await orderRepo.save(order);
+};
+					</code></pre>
+				</section>
+			</section>
+
+			<!-- Conclusion -->
+			<section>
+				<section>
+					<h2>Conclusion</h2>
+					<p>
+						DDD is not inherently object-oriented.
+					</p>
+					<p class="fragment">
+						Functional programming can model domains effectively 
+						through types, pure functions, and module boundaries.
+					</p>
+				</section>
+
+				<section>
+					<h2>Key Takeaways</h2>
+					<ul>
+						<li class="fragment">DDD concepts translate well to functional programming</li>
+						<li class="fragment">Functional DDD can achieve domain modeling without classes</li>
+						<li class="fragment">Immutable data and pure functions provide benefits</li>
+						<li class="fragment">The choice between OOP and FP is about tools, not DDD principles</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Thank You</h2>
+					<p>
+						Questions?
+					</p>
+				</section>
+			</section>
+
 		</div>
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+	</div>
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/zoom/zoom.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/search/search.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			center: true,
+			hash: true,
+			margin: 0.08,
+			minScale: 0.2,
+			maxScale: 2.0,
+			transition: 'slide',
+			transitionSpeed: 'default',
+
+			plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+		});
+
+	</script>
+
+</body>
 </html>
+
